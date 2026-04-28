@@ -111,6 +111,8 @@ app.use(
         return callback(null, true);
       }
 
+          if (origin.endsWith(".vercel.app")) return callback(null, true);
+
           if (env.corsOrigins.includes(origin)) {
         return callback(null, true);
       }
