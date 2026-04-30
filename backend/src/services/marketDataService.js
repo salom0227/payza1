@@ -4,8 +4,17 @@ const { decimalToUnits, unitsToDecimal, multiplyUnits, divideUnits } = require("
 const COINGECKO_BASE_URL = "https://api.coingecko.com/api/v3";
 const CBU_USD_RATE_URL = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/USD/";
 const ONE = decimalToUnits("1");
+const apiCache = new Map();
 
 const withTimeout = async (url, options = {}, timeoutMs = 8000) => {
+  const cacheKey = url;
+  const now = Date.now();
+  const cached = apiCache.get(cacheKey);
+
+  if (cached && cached.expiry > now) {
+    return cached.data;
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -23,7 +32,15 @@ const withTimeout = async (url, options = {}, timeoutMs = 8000) => {
       throw new Error(`Request failed (${response.status}) for ${url}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    apiCache.set(cacheKey, { data, expiry: now + 60000 }); // 1 min cache
+    return data;
+  } catch (error) {
+    if (cached) {
+      console.warn(`[API Cache] Returning stale data for ${url} due to error: ${error.message}`);
+      return cached.data;
+    }
+    throw error;
   } finally {
     clearTimeout(timer);
   }
