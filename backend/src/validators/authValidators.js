@@ -17,7 +17,8 @@ const registerSchema = z.object({
     .max(100)
     .regex(/^[\p{L}\p{M}\s.'-]+$/u, "Full name contains invalid characters"),
   email: z.string().trim().toLowerCase().email().max(255),
-  password: passwordSchema
+  password: passwordSchema,
+  accountType: z.enum(["real", "demo"]).default("demo")
 });
 
 const loginSchema = z.object({

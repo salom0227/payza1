@@ -13,7 +13,8 @@ const AuthRegister = () => {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    accountType: "demo"
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,7 +52,8 @@ const AuthRegister = () => {
       await register({
         fullName: formData.fullName.trim(),
         email: formData.email.trim(),
-        password: formData.password
+        password: formData.password,
+        accountType: formData.accountType
       });
       navigate("/user-wallet-dashboard", { replace: true });
     } catch (authError) {
@@ -100,6 +102,20 @@ const AuthRegister = () => {
           autoComplete="new-password"
           required
         />
+        <div className="flex flex-col space-y-1.5">
+          <label className="text-sm font-medium leading-none text-foreground">
+            Account Type
+          </label>
+          <select
+            value={formData.accountType}
+            onChange={handleChange("accountType")}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            required
+          >
+            <option value="demo">Demo Account (Start with $10,000 bonus)</option>
+            <option value="real">Real Account (Start with $0.00)</option>
+          </select>
+        </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button type="submit" fullWidth loading={loading}>
           Create Account

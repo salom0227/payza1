@@ -72,11 +72,15 @@ router.post(
       passwordHash
     });
 
-    // Create default wallets for a newly registered user with DEMO BALANCE!
+    const startUSD = payload.accountType === "demo" ? 1000 : 0;
+    const startUZS = payload.accountType === "demo" ? 50000000 : 0;
+    const startUSDT = payload.accountType === "demo" ? 5000 : 0;
+    const startBTC = payload.accountType === "demo" ? 0.5 : 0;
+
     await pool.query(
       `INSERT INTO wallets (user_id, currency, balance)
-       VALUES ($1, 'USD', 1000), ($1, 'UZS', 50000000), ($1, 'USDT', 5000), ($1, 'BTC', 0.5)`,
-      [user.id]
+       VALUES ($1, 'USD', $2), ($1, 'UZS', $3), ($1, 'USDT', $4), ($1, 'BTC', $5)`,
+      [user.id, startUSD, startUZS, startUSDT, startBTC]
     );
 
     await pool.query(
