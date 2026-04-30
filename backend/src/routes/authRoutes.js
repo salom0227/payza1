@@ -72,10 +72,10 @@ router.post(
       passwordHash
     });
 
-    // Create default wallets for a newly registered user.
+    // Create default wallets for a newly registered user with DEMO BALANCE!
     await pool.query(
       `INSERT INTO wallets (user_id, currency, balance)
-       VALUES ($1, 'USD', 0), ($1, 'UZS', 0), ($1, 'USDT', 0), ($1, 'BTC', 0)`,
+       VALUES ($1, 'USD', 1000), ($1, 'UZS', 50000000), ($1, 'USDT', 5000), ($1, 'BTC', 0.5)`,
       [user.id]
     );
 
