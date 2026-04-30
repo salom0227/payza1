@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Icon from '../AppIcon';
 import Button from './Button';
 import { useAuth } from 'contexts/AuthContext';
@@ -9,6 +10,24 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { logout, user } = useAuth();
+  const { t, i18n } = useTranslation();
+
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+  
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDark]);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') setIsDark(true);
+  }, []);
 
   const userNavItems = [
   { label: 'Dashboard', path: '/user-wallet-dashboard', icon: 'LayoutDashboard' },
@@ -54,15 +73,28 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
             className={`nav-header-item ${isActive(item?.path) ? 'active' : ''}`}>
 
               <Icon name={item?.icon} size={18} />
-              <span>{item?.label}</span>
+              <span>{t(item?.label)}</span>
             </button>
           )}
         </nav>
 
         <div className="nav-header-actions">
-          <span className="hidden md:inline text-sm text-muted-foreground">
-            {user?.fullName || user?.email || "Account"}
-          </span>
+          <select 
+            value={i18n.language} 
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            className="hidden md:block bg-transparent text-sm font-medium border-none focus:ring-0 cursor-pointer text-muted-foreground outline-none p-0 pr-4 appearance-none"
+            style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
+          >
+            <option value="uz">UZB</option>
+            <option value="en">ENG</option>
+            <option value="ru">RUS</option>
+          </select>
+          <Button
+            variant="ghost"
+            size="icon"
+            iconName={isDark ? "Sun" : "Moon"}
+            iconSize={20}
+            onClick={() => setIsDark(!isDark)} />
           <Button
             variant="ghost"
             size="icon"
@@ -76,8 +108,9 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
             iconName="LogOut"
             iconPosition="left"
             onClick={handleLogout}
+            className="hidden sm:flex"
           >
-            Logout
+            {t("Logout")}
           </Button>
 
         </div>
@@ -108,18 +141,36 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
             className={`nav-mobile-item ${isActive(item?.path) ? 'active' : ''}`}>
 
                 <Icon name={item?.icon} size={24} />
-                <span>{item?.label}</span>
+                <span>{t(item?.label)}</span>
               </button>
           )}
 
             <div className="border-t border-border mt-4 pt-4">
-              <button className="nav-mobile-item">
-                <Icon name="Bell" size={24} />
-                <span>Notifications</span>
+              <div className="flex items-center gap-4 px-4 py-3 mb-2">
+                <span className="text-muted-foreground text-sm font-medium uppercase tracking-wider w-16">
+                  {t("Language")}
+                </span>
+                <select 
+                  value={i18n.language} 
+                  onChange={(e) => i18n.changeLanguage(e.target.value)}
+                  className="bg-muted text-sm font-medium rounded p-1 w-full border-none focus:ring-0 cursor-pointer"
+                >
+                  <option value="uz">O'zbekcha</option>
+                  <option value="en">English</option>
+                  <option value="ru">Русский</option>
+                </select>
+              </div>
+              <button className="nav-mobile-item w-full" onClick={() => setIsDark(!isDark)}>
+                <Icon name={isDark ? "Sun" : "Moon"} size={24} />
+                <span>{isDark ? "Kunduzgi mavzu" : "Tungi mavzu"}</span>
               </button>
-              <button className="nav-mobile-item" onClick={handleLogout}>
+              <button className="nav-mobile-item w-full">
+                <Icon name="Bell" size={24} />
+                <span>{t("Notifications")}</span>
+              </button>
+              <button className="nav-mobile-item w-full" onClick={handleLogout}>
                 <Icon name="LogOut" size={24} />
-                <span>Logout</span>
+                <span>{t("Logout")}</span>
               </button>
             </div>
           </nav>
