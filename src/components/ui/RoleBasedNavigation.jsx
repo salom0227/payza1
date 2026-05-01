@@ -129,23 +129,16 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
               <div className="nav-header-brand">
                 <Icon name="Wallet" size={24} color="#FFFFFF" />
               </div>
-              <span className="nav-header-brand-text">FinPay</span>
+              <span className="nav-header-brand-text">PayZa</span>
             </div>
           </div>
 
           <nav className="nav-mobile-menu">
-            {navItems?.map((item) =>
-          <button
-            key={item?.path}
-            onClick={() => handleNavigation(item?.path)}
-            className={`nav-mobile-item ${isActive(item?.path) ? 'active' : ''}`}>
-
-                <Icon name={item?.icon} size={24} />
-                <span>{t(item?.label)}</span>
-              </button>
-          )}
-
-            <div className="border-t border-border mt-4 pt-4">
+            <div className="pb-4">
+              <span className="text-muted-foreground text-sm font-medium uppercase tracking-wider px-4">
+                Sozlamalar
+              </span>
+            </div>
               <div className="flex items-center gap-4 px-4 py-3 mb-2">
                 <span className="text-muted-foreground text-sm font-medium uppercase tracking-wider w-16">
                   {t("Language")}
@@ -172,10 +165,23 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
                 <Icon name="LogOut" size={24} />
                 <span>{t("Logout")}</span>
               </button>
-            </div>
           </nav>
         </div>
       }
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="nav-bottom-bar">
+        {navItems?.map((item) => (
+          <button
+            key={item?.path}
+            onClick={() => handleNavigation(item?.path)}
+            className={`nav-bottom-item ${isActive(item?.path) ? 'active' : ''}`}
+          >
+            <Icon name={item?.icon} size={20} />
+            <span className="nav-bottom-item-text">{t(item?.label)}</span>
+          </button>
+        ))}
+      </nav>
     </>);
 
 };
