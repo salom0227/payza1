@@ -1,19 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { visualizer } from "rollup-plugin-visualizer";
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     tsconfigPaths(), 
-    react(),
-    visualizer({
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-      filename: "dist/bundle-analysis.html"
-    })
+    react()
   ],
   build: {
     chunkSizeWarningLimit: 900,
