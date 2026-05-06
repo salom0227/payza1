@@ -268,7 +268,7 @@
   }
 
   .nav-bottom-bar {
-    @apply fixed bottom-4 left-4 right-4 h-16 bg-card/80 backdrop-blur-lg border border-border z-[100] flex items-center justify-around px-2 lg:hidden shadow-xl rounded-2xl;
+    @apply fixed bottom-4 left-4 right-4 h-16 bg-white/90 dark:bg-slate-800/90 backdrop-blur-lg border border-border z-[100] flex items-center justify-around px-2 lg:hidden shadow-xl rounded-2xl;
     padding-bottom: 0;
   }
 
