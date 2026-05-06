@@ -3,7 +3,6 @@ import RoleBasedNavigation from '../../components/ui/RoleBasedNavigation';
 import QuickActionPanel from '../../components/ui/QuickActionPanel';
 import TotalBalanceCard from './components/TotalBalanceCard';
 import BalanceCard from './components/BalanceCard';
-import ActionButtons from './components/ActionButtons';
 import RecentTransactions from './components/RecentTransactions';
 import QuickLinks from './components/QuickLinks';
 import PortfolioPerformanceChart from './components/PortfolioPerformanceChart';
@@ -120,10 +119,10 @@ const UserWalletDashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       <RoleBasedNavigation userRole="user" />
-      <main className="pt-24 pb-12 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Wallet</h1>
-          <p className="text-base md:text-lg text-muted-foreground">Qaytganingiz bilan tabriklaymiz!</p>
+      <main className="pt-20 pb-32 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="mb-6 md:mb-10">
+          <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-1">Wallet</h1>
+          <p className="text-sm md:text-lg text-muted-foreground opacity-80">Qaytganingiz bilan tabriklaymiz!</p>
         </div>
 
         <div className="space-y-6 md:space-y-8">
@@ -169,8 +168,6 @@ const UserWalletDashboard = () => {
             <PortfolioPerformanceChart data={safeData?.portfolioHistory} />
             <FeaturedMarketsPanel markets={safeData?.featuredMarkets} />
           </div>
-
-          <ActionButtons />
 
           <QuickActionPanel userRole="user" />
 

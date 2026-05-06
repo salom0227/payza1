@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 
 const TotalBalanceCard = ({ totalBalance, currency = 'USD', dailyChangePercent = 0 }) => {
+  const [showBalance, setShowBalance] = useState(true);
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -14,23 +16,38 @@ const TotalBalanceCard = ({ totalBalance, currency = 'USD', dailyChangePercent =
   const isPositive = Number(dailyChangePercent || 0) >= 0;
 
   return (
-    <div className="bg-gradient-to-br from-primary to-accent rounded-xl p-6 md:p-8 lg:p-10 shadow-lg">
-      <div className="flex items-start justify-between mb-4 md:mb-6 gap-4">
-        <div>
-          <p className="text-sm md:text-base mb-2 text-white">Total Balance</p>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground">
-            {formatCurrency(totalBalance)}
+    <div className="bg-[#1E293B]/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl"></div>
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-2 mb-2">
+          <p className="text-sm text-slate-400 font-medium">Umumiy balans</p>
+          <button onClick={() => setShowBalance(!showBalance)} className="text-slate-400 hover:text-white transition-colors">
+            <Icon name={showBalance ? "Eye" : "EyeOff"} size={16} />
+          </button>
+        </div>
+        
+        <div className="flex items-end gap-3 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
+            {showBalance ? formatCurrency(totalBalance) : '****.**'}
           </h1>
+          <div className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold mb-1 ${isPositive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'}`}>
+            <Icon name={isPositive ? 'TrendingUp' : 'TrendingDown'} size={12} />
+            <span>{isPositive ? '+' : ''}{Number(dailyChangePercent || 0).toFixed(2)}%</span>
+          </div>
         </div>
-        <div className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-          <Icon name="Wallet" size={24} color="var(--color-primary-foreground)" />
-        </div>
-      </div>
-      <div className="flex items-center justify-between gap-3 text-primary-foreground/90">
-        <span className="text-xs md:text-sm text-neutral-50">Live market references</span>
-        <div className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${isPositive ? 'bg-white/20 text-white' : 'bg-black/20 text-white'}`}>
-          <Icon name={isPositive ? 'TrendingUp' : 'TrendingDown'} size={14} color="var(--color-primary-foreground)" />
-          <span>{isPositive ? '+' : ''}{Number(dailyChangePercent || 0).toFixed(2)}% 24h</span>
+
+        <div className="flex gap-3">
+          <button className="flex-1 bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-primary/25">
+            <Icon name="ArrowDownToLine" size={18} />
+            To'ldirish
+          </button>
+          <button className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95">
+            <Icon name="ArrowUpFromLine" size={18} />
+            Yechish
+          </button>
         </div>
       </div>
     </div>

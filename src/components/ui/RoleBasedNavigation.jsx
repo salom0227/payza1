@@ -169,15 +169,37 @@ const RoleBasedNavigation = ({ userRole = 'user' }) => {
         </div>
       }
 
-      {/* Mobile Bottom Navigation Bar */}
+      {/* Mobile Bottom Navigation Bar - Native Style */}
       <nav className="nav-bottom-bar">
-        {navItems?.map((item) => (
+        {navItems?.slice(0, 2).map((item) => (
           <button
             key={item?.path}
             onClick={() => handleNavigation(item?.path)}
             className={`nav-bottom-item ${isActive(item?.path) ? 'active' : ''}`}
           >
-            <Icon name={item?.icon} size={20} />
+            <Icon name={item?.icon} size={22} />
+            <span className="nav-bottom-item-text">{t(item?.label)}</span>
+          </button>
+        ))}
+        
+        {/* Central Action Button */}
+        <button 
+          onClick={() => handleNavigation('/send-payment')}
+          className="flex flex-col items-center justify-center -translate-y-4"
+        >
+          <div className="w-14 h-14 rounded-full bg-primary shadow-lg flex items-center justify-center text-white border-4 border-background active:scale-90 transition-transform">
+             <Icon name="Send" size={24} />
+          </div>
+          <span className="text-[10px] font-bold text-primary mt-1">{t('Send')}</span>
+        </button>
+
+        {navItems?.slice(2, 4).map((item) => (
+          <button
+            key={item?.path}
+            onClick={() => handleNavigation(item?.path)}
+            className={`nav-bottom-item ${isActive(item?.path) ? 'active' : ''}`}
+          >
+            <Icon name={item?.icon} size={22} />
             <span className="nav-bottom-item-text">{t(item?.label)}</span>
           </button>
         ))}
